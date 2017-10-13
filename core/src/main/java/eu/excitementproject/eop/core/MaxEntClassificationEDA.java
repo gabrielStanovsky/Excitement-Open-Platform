@@ -43,6 +43,8 @@ import eu.excitementproject.eop.core.component.scoring.BagOfWordsScoring;
 import eu.excitementproject.eop.lap.LAPException;
 import eu.excitementproject.eop.lap.PlatformCASProber;
 
+//import de.dfki.lt.nemex.a.NEMEX_A;
+
 /**
  * The <code>MaxEntClassificationEDA</code> class implements the
  * <code>EDABasic</code> interface.
@@ -64,7 +66,7 @@ import eu.excitementproject.eop.lap.PlatformCASProber;
  * 5) (optional) settings for the classifier, the maximum number of iterations
  * and the cut-off threshold.
  * 
- * @author Rui Wang
+ * @author Rui Wang, Madhumita
  * @since December 2012
  */
 public class MaxEntClassificationEDA implements

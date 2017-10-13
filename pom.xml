@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.excitementproject</groupId>
 	<artifactId>eop</artifactId>
-	<version>1.1.4-SNAPSHOT</version>
+	<version>1.2.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Free Open Source Platform for Recognizing Textual Entailments (RTE)</name>
 	<description>The Excitement Open Platform (EOP), has created a generic architecture and a comprehensive implementation for a multilingual textual inference platform available to the scientific and technological communities. The EOP is a main product of the EXCITEMENT project. This research project, has two interleaved high-level goals. The first is to set up, for the first time, a generic architecture and a comprehensive implementation for a multilingual textual inference platform and to make it available to the scientific and technological communities. The second goal of the project is to develop a new generation of inference-based industrial text exploration applications for customer interactions, which will enable businesses to better analyze and make sense of their diverse and often unpredicted client content. These goals will be achieved for three languages – English, German and Italian, and for three customer interaction channels – speech (transcriptions), email and social media. </description>
@@ -34,6 +34,8 @@
 		<module>distsim</module>
 		<module>globalgraphoptimizer</module>
 		<module>lexicalinferenceminer</module>
+		<module>alignmentedas</module> 
+		<module>adarte</module>
 	</modules>
 
         <profiles>
@@ -122,55 +124,76 @@
 	   </profile>
 
 	   <!-- Other profiles go here .. -->
+		<profile>
+			<!-- A profile for building the distribution file -->
+			<id>release</id>
+			<modules>
+				<module>core</module>
+				<module>lap</module>
+				<module>common</module>
+				<!-- <module>infrastructure</module> -->
+				<!-- <module>engineml</module> -->
+				<module>transformations</module>
+				<module>biutee</module>
+				<module>util</module>
+				<module>redis</module>
+				<module>distsim</module>
+				<module>globalgraphoptimizer</module>
+				<module>lexicalinferenceminer</module>
+				<module>alignmentedas</module>
+				<module>adarte</module>
+				<module>distribution</module>
+			</modules>
+		</profile>
 
-	</profiles>
+		</profiles>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-core</artifactId>
-				<version>2.4.0</version>
+				<version>${uimaj-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-examples</artifactId>
-				<version>2.4.0</version>
+				<version>${uimaj-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-bootstrap</artifactId>
-				<version>2.4.0</version>
+				<version>${uimaj-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-adapter-soap</artifactId>
-				<version>2.4.0</version>
+				<version>${uimaj-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-tools</artifactId>
-				<version>2.4.0</version>
+				<version>${uimaj-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-document-annotation</artifactId>
-				<version>2.4.0</version>
+				<version>${uimaj-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-cpe</artifactId>
-				<version>2.4.0</version>
+				<version>${uimaj-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-adapter-vinci</artifactId>
-				<version>2.4.0</version>
+				<version>${uimaj-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>jVinci</artifactId>
-				<version>2.4.0</version>
+				<version>${uimaj-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
@@ -243,11 +266,6 @@
 				<version>2008-09-28</version>
 			</dependency>
 			<dependency>
-				<groupId>opennlp</groupId>
-				<artifactId>opennlp-tools</artifactId>
-				<version>1.3.0</version>
-			</dependency>
-			<dependency>
 				<groupId>com.aliasi</groupId>
 				<artifactId>lingpipe</artifactId>
 				<version>3.1.1</version>
@@ -287,6 +305,178 @@
 				<artifactId>biu_legacy</artifactId>
 				<version>2013-jan-24</version>
 			</dependency>
+		<!-- Configuration for dependencies which otherwise have multiple versions on the classpath.
+		Putting these in the main pom for easier maintenance -->
+			<dependency>
+				<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+				<artifactId>de.tudarmstadt.ukp.dkpro.core.api.lexmorph-asl</artifactId>
+				<version>${dkpro-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+				<artifactId>de.tudarmstadt.ukp.dkpro.core.api.frequency-asl</artifactId>
+				<version>${dkpro-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+				<artifactId>de.tudarmstadt.ukp.dkpro.core.api.resources-asl</artifactId>
+				<version>${dkpro-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+				<artifactId>de.tudarmstadt.ukp.dkpro.core.api.segmentation-asl</artifactId>
+				<version>${dkpro-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+				<artifactId>de.tudarmstadt.ukp.dkpro.core.api.syntax-asl</artifactId>
+				<version>${dkpro-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+				<artifactId>de.tudarmstadt.ukp.dkpro.core.api.coref-asl</artifactId>
+				<version>${dkpro-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ibm.icu</groupId>
+				<artifactId>icu4j</artifactId>
+				<version>4.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.6</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-collections</groupId>
+				<artifactId>commons-collections</artifactId>
+				<version>3.2.1</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.4</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.6</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>jaxen</groupId>
+				<artifactId>jaxen</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.trove4j</groupId>
+				<artifactId>trove4j</artifactId>
+				<version>3.0.2</version>
+			</dependency>
+			<dependency>
+				<groupId>nz.ac.waikato.cms.weka</groupId>
+				<artifactId>weka-stable</artifactId>
+				<version>3.8.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ant</groupId>
+				<artifactId>ant</artifactId>
+				<version>1.8.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-compress</artifactId>
+				<version>1.8</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.opennlp</groupId>
+				<artifactId>opennlp-maxent</artifactId>
+				<version>3.0.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.opennlp</groupId>
+				<artifactId>opennlp-tools</artifactId>
+				<version>1.7.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.uima</groupId>
+				<artifactId>uimafit-core</artifactId>
+				<version>2.2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.json</groupId>
+				<artifactId>json</artifactId>
+				<version>20131018</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>1.7.10</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jul-to-slf4j</artifactId>
+				<version>1.7.10</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.7.10</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>1.7.10</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>4.3.10.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-asm</artifactId>
+				<version>4.3.10.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>4.3.10.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>4.3.10.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>4.3.10.RELEASE</version> <!-- 3.2.5? -->
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-expression</artifactId>
+				<version>4.3.10.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>xalan</groupId>
+				<artifactId>xalan</artifactId>
+				<version>2.7.1</version>
+			</dependency>
+			<dependency>
+				<groupId>xerces</groupId>
+				<artifactId>xercesImpl</artifactId>
+				<version>2.9.1</version>
+			</dependency>
+			<dependency>
+				<groupId>xml-apis</groupId>
+				<artifactId>xml-apis</artifactId>
+				<version>1.3.04</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -305,6 +495,11 @@
 				<enabled>false</enabled>
 			</releases>
 		</repository>
+		<repository>
+			<id>ukp-oss-releases</id>
+			<name>DKPro repository</name>
+			<url>http://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-releases</url>
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -322,6 +517,19 @@
 				<enabled>false</enabled>
 			</releases>
 		</pluginRepository>
+		<pluginRepository>
+			<id>ukp-oss-releases</id>
+			<name>DKPro repository</name>
+			<url>http://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-releases</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
 	</pluginRepositories>
 
 	<build>
@@ -333,8 +541,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.5.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 
@@ -346,23 +554,19 @@
 				<version>2.13</version>
 				<configuration>
 					<skipTests>false</skipTests>
-					<argLine>-Xms4G -Xmx4G</argLine>
+					<argLine>-Xms1000m -Xmx2000m</argLine>
 				</configuration>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.3</version>
+				<version>3.0.0</version>
 				<configuration>
 					<descriptors>
-						<descriptor>assembly.xml</descriptor>
+						<descriptor>distribution/assembly.xml</descriptor>
 					</descriptors>
 				</configuration>
-
-				<!-- when commented, run mvn assembly:assembly, otherwise mvn package 
-					<executions> <execution> <id>attach-assemblies</id> <phase>package</phase> 
-					<goals> <goal>single</goal> </goals> </execution> </executions> -->
 			</plugin>
 
 			<plugin>
@@ -377,19 +581,21 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.0.1</version>
+				<!-- <version>3.0.1</version> -->
+				<version>3.8</version> <!-- to support jdk1.8 -->
 				<configuration>
-					<targetJdk>1.7</targetJdk>
+					<targetJdk>1.8</targetJdk>
 				</configuration>
 			</plugin>
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.5.2</version>
+				<!-- <version>2.5.2</version> -->
+				<version>3.0.5</version> <!-- to work with jdk 1.8 -->
 				<configuration>
 					<xmlOutput>true</xmlOutput>
-					<onlyAnalyze>eop.core.*,eop.lap.*,eop.common.*,eop.biutee.*,eop.transformations.*,eop.redis.*,eop.distsim.*,eop.util.*,eop.lexicalinferenceminer.*,eop.globalgraphoptimizer.*</onlyAnalyze>
+					<onlyAnalyze>eop.core.*,eop.lap.*,eop.common.*,eop.biutee.*,eop.transformations.*,eop.redis.*,eop.distsim.*,eop.util.*,eop.lexicalinferenceminer.*,eop.globalgraphoptimizer.*,eop.adarte.*</onlyAnalyze>
 				</configuration>
 			</plugin>
 
@@ -725,12 +931,23 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
+			
+			<!-- to use with the pmd plugin -->
+			<plugin>
+            			<groupId>org.apache.maven.plugins</groupId>
+            			<artifactId>maven-jxr-plugin</artifactId>
+            			<version>2.3</version>
+        		</plugin>
+			
 		</plugins>
 
 	</reporting>
 	<properties>
+		<eop-version>1.2.4-SNAPSHOT</eop-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-                <surefire.working.dir>${project.build.directory}/BIUTEE_Environment/biutee/workdir/</surefire.working.dir>
-                <dependency.output.dir>${project.build.directory}/BIUTEE_Environment/</dependency.output.dir>
+		<surefire.working.dir>${project.build.directory}/BIUTEE_Environment/biutee/workdir/</surefire.working.dir>
+		<dependency.output.dir>${project.build.directory}/BIUTEE_Environment/</dependency.output.dir>
+		<dkpro-version>1.8.0</dkpro-version>
+		<uimaj-version>2.8.1</uimaj-version>
 	</properties>
 </project>

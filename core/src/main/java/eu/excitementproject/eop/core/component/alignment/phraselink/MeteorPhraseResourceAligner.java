@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
-import org.uimafit.util.JCasUtil; 
+import org.apache.uima.fit.util.JCasUtil;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 
 import eu.excitement.type.alignment.Link;
@@ -84,8 +84,8 @@ public class MeteorPhraseResourceAligner implements AlignmentComponent {
 			throw new AlignmentComponentException("Failed to access the Two views (TEXTVIEW, HYPOTHESISVIEW)", e); 
 		}
 		
-		logger.info("TEXT: " + textView.getDocumentText().substring(0, 25) + " ..."); 
-		logger.info("HYPO: " + hypoView.getDocumentText().substring(0, 25) + " ...");  
+		logger.info("TEXT: " + textView.getDocumentText()); 
+		logger.info("HYPO: " + hypoView.getDocumentText());  
 		
 		int countAnnotatedLinks = 0; 
 		
@@ -300,12 +300,12 @@ public class MeteorPhraseResourceAligner implements AlignmentComponent {
 		FSArray annots = new FSArray(view, countTokens); 
 		aTarget.setTargetAnnotations(annots); 
 		Iterator<Token> itr = tokens.iterator(); 
-		int begin=0; 
+		int begin = -1;  // I am using -1 as "not set yet". 
 		int end=0; 
 		for(int i=0; i < countTokens; i++)
 		{
 			Token t = itr.next(); 
-			if (begin == 0)
+			if (begin == -1) // if not set. 
 				begin = t.getBegin(); 
 			end = t.getEnd();  // we are assuming that collection tokens is ordered. 
 			annots.set(i, t); 
@@ -341,6 +341,12 @@ public class MeteorPhraseResourceAligner implements AlignmentComponent {
 	{
 		return resourcePath; 
 	}
+	
+	public void close() throws AlignmentComponentException
+	{
+		// nothing to close on this aligner. 
+	}
+
 	
 	// a utility method 
 	static List<Integer> getOccurrencePoints(String holder, String substring)

@@ -14,7 +14,7 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.NonEmptyStringList;
 import org.apache.uima.jcas.cas.StringList;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import eu.excitement.type.alignment.Link;
@@ -25,6 +25,7 @@ import eu.excitement.type.predicatetruth.PredicateTruthNegative;
 import eu.excitement.type.predicatetruth.PredicateTruthPositive;
 import eu.excitement.type.predicatetruth.PredicateTruthUncertain;
 import eu.excitementproject.eop.common.component.alignment.AlignmentComponent;
+import eu.excitementproject.eop.common.component.alignment.AlignmentComponentException;
 import eu.excitementproject.eop.common.component.alignment.PairAnnotatorComponentException;
 import eu.excitementproject.eop.common.utilities.uima.UimaUtils;
 import eu.excitementproject.eop.lap.implbase.LAP_ImplBase;
@@ -169,6 +170,13 @@ public class PredicateTruthAligner implements AlignmentComponent {
 		// This component does not support instance configuration
 		return null;
 	}
+
+	@Override
+	public void close() throws AlignmentComponentException
+	{
+		
+	}
+
 	
 	/**
 	 * Draw bidirectional links between all predicate truth annotation of type (TextType) in text and truth annotation of type (hypoType) in Hypothesis

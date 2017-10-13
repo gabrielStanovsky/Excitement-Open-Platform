@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import org.apache.uima.jcas.JCas;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 import eu.excitement.type.alignment.Link;
 import eu.excitementproject.eop.common.utilities.configuration.ImplCommonConfig;
@@ -25,6 +25,7 @@ import eu.excitementproject.eop.lap.implbase.LAP_ImplBase;
  * @author Vered Shwartz
  *
  */
+@SuppressWarnings("deprecation")
 public class LexicalAlignerTest {
 
 	// Private Members
